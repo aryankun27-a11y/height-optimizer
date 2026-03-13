@@ -7,6 +7,23 @@ import Posture from './pages/Posture';
 import Learn from './pages/Learn';
 import './App.css';
 
+function useLocalState(key, initial) {
+  const [value, setValue] = useState(() => {
+    try {
+      const stored = localStorage.getItem(key);
+      return stored ? JSON.parse(stored) : initial;
+    } catch { return initial; }
+  });
+  const set = (v) => {
+    setValue(prev => {
+      const next = typeof v === 'function' ? v(prev) : v;
+      localStorage.setItem(key, JSON.stringify(next));
+      return next;
+    });
+  };
+  return [value, set];
+}
+
 const tabs = [
   { id: 'dashboard', label: 'Dashboard' },
   { id: 'routine', label: 'Routine' },
@@ -18,9 +35,9 @@ const tabs = [
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
-  const [heightLog, setHeightLog] = useState([]);
-  const [streak, setStreak] = useState(0);
-  const [totalSessions, setTotalSessions] = useState(0);
+  const [heightLog, setHeightLog] = useLocalState('heightLog', []);
+  const [streak, setStreak] = useLocalState('streak', 0);
+  const [totalSessions, setTotalSessions] = useLocalState('totalSessions', 0);
 
   const sharedProps = { heightLog, setHeightLog, streak, setStreak, totalSessions, setTotalSessions };
 

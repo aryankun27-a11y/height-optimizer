@@ -1,8 +1,25 @@
 import React, { useState } from 'react';
 import { habitsData } from '../data/content';
 
+function useLocalState(key, initial) {
+  const [value, setValue] = useState(() => {
+    try {
+      const stored = localStorage.getItem(key);
+      return stored ? JSON.parse(stored) : initial;
+    } catch { return initial; }
+  });
+  const set = (v) => {
+    setValue(prev => {
+      const next = typeof v === 'function' ? v(prev) : v;
+      localStorage.setItem(key, JSON.stringify(next));
+      return next;
+    });
+  };
+  return [value, set];
+}
+
 export default function Habits() {
-  const [done, setDone] = useState(habitsData.map(() => false));
+  const [done, setDone] = useLocalState('habits', habitsData.map(() => false));
 
   const toggle = (i) => setDone(prev => prev.map((v, idx) => idx === i ? !v : v));
   const doneCount = done.filter(Boolean).length;
