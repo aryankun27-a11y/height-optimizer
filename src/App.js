@@ -3,7 +3,7 @@ import Dashboard from './pages/Dashboard';
 import Routine from './pages/Routine';
 import HeightLog from './pages/HeightLog';
 import Habits from './pages/Habits';
-import Posture from './pages/Posture';
+import Progress from './pages/Progress';
 import Learn from './pages/Learn';
 import './App.css';
 
@@ -29,7 +29,7 @@ const tabs = [
   { id: 'routine', label: 'Routine' },
   { id: 'log', label: 'Height Log' },
   { id: 'habits', label: 'Habits' },
-  { id: 'posture', label: 'Posture' },
+  { id: 'progress', label: 'Progress' },
   { id: 'learn', label: 'Learn' },
 ];
 
@@ -47,7 +47,7 @@ function App() {
       case 'routine': return <Routine {...sharedProps} />;
       case 'log': return <HeightLog {...sharedProps} />;
       case 'habits': return <Habits />;
-      case 'posture': return <Posture />;
+      case 'progress': return <Progress {...sharedProps} />;
       case 'learn': return <Learn />;
       default: return <Dashboard {...sharedProps} setActiveTab={setActiveTab} />;
     }
